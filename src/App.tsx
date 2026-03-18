@@ -4,6 +4,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppLayout } from "@/components/AppLayout";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import Shipments from "./pages/Shipments";
 import Tracking from "./pages/Tracking";
@@ -12,6 +14,8 @@ import Vehicles from "./pages/Vehicles";
 import Warehouses from "./pages/Warehouses";
 import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 
 const queryClient = new QueryClient();
 
@@ -21,18 +25,31 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <AppLayout>
+        <AuthProvider>
           <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/shipments" element={<Shipments />} />
-            <Route path="/tracking" element={<Tracking />} />
-            <Route path="/drivers" element={<Drivers />} />
-            <Route path="/vehicles" element={<Vehicles />} />
-            <Route path="/warehouses" element={<Warehouses />} />
-            <Route path="/analytics" element={<Analytics />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route
+              path="/*"
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <Routes>
+                      <Route path="/" element={<Dashboard />} />
+                      <Route path="/shipments" element={<Shipments />} />
+                      <Route path="/tracking" element={<Tracking />} />
+                      <Route path="/drivers" element={<Drivers />} />
+                      <Route path="/vehicles" element={<Vehicles />} />
+                      <Route path="/warehouses" element={<Warehouses />} />
+                      <Route path="/analytics" element={<Analytics />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
           </Routes>
-        </AppLayout>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

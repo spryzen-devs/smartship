@@ -1,9 +1,10 @@
 import {
-  LayoutDashboard, Package, Truck, Users, Warehouse, MapPin, BarChart3, Settings, LogOut, Menu,
+  LayoutDashboard, Package, Truck, Users, Warehouse, MapPin, BarChart3, Settings, Menu, LogOut,
 } from "lucide-react";
 import { NavLink as RouterNavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
@@ -18,6 +19,7 @@ const navItems = [
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const { signOut } = useAuth();
 
   return (
     <div className="flex min-h-screen w-full">
@@ -32,8 +34,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <Menu className="h-5 w-5" />
           </button>
           {!collapsed && (
-            <span className="ml-3 text-sm font-bold tracking-tight text-sidebar-foreground">
-              GATIMAAN
+            <span className="ml-3 text-sm font-bold tracking-tight text-sidebar-foreground uppercase italic underline decoration-primary decoration-2 underline-offset-4">
+              SmartShip <span className="text-primary not-italic">.</span>
             </span>
           )}
         </div>
@@ -49,8 +51,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150",
                   isActive
-                    ? "bg-sidebar-accent text-sidebar-primary"
-                    : "text-sidebar-muted hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                    ? "bg-sidebar-accent text-sidebar-primary shadow-sm"
+                    : "text-sidebar-muted font-bold hover:bg-sidebar-accent hover:text-sidebar-foreground"
                 )}
               >
                 <item.icon className="h-4 w-4 shrink-0" />
@@ -62,10 +64,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
         {/* Footer */}
         <div className="border-t border-sidebar-border p-2 space-y-1">
-          <RouterNavLink to="/settings" className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-sidebar-muted hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors">
+          <RouterNavLink to="/settings" className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-bold text-sidebar-muted hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors">
             <Settings className="h-4 w-4 shrink-0" />
             {!collapsed && <span>Settings</span>}
           </RouterNavLink>
+          <button onClick={() => signOut()} className="w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-bold text-sidebar-muted hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors text-left">
+            <LogOut className="h-4 w-4 shrink-0" />
+            {!collapsed && <span>Log out</span>}
+          </button>
         </div>
       </aside>
 
