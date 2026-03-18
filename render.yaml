@@ -1,0 +1,11 @@
+services:
+  - type: worker
+    name: smartship-simulation-engine
+    env: node
+    buildCommand: npm install
+    startCommand: npm run start:simulate
+    envVars:
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_PUBLISHABLE_KEY
+        sync: false
