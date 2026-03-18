@@ -64,10 +64,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
         {/* Footer */}
         <div className="border-t border-sidebar-border p-2 space-y-1">
-          <RouterNavLink to="/settings" className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-bold text-sidebar-muted hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors">
-            <Settings className="h-4 w-4 shrink-0" />
-            {!collapsed && <span>Settings</span>}
-          </RouterNavLink>
           <button onClick={() => signOut()} className="w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-bold text-sidebar-muted hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors text-left">
             <LogOut className="h-4 w-4 shrink-0" />
             {!collapsed && <span>Log out</span>}
