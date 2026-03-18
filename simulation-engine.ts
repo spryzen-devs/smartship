@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { setDefaultResultOrder } from 'node:dns';
+import * as http from 'http';
 
 // Force DNS to prefer IPv4 (fixes ConnectTimeoutError in NAT64 environments)
 setDefaultResultOrder('ipv4first');
@@ -485,3 +486,14 @@ resumeActiveShipments().catch(e => console.error('Failed to resume:', e));
 watchShipments();
 
 console.log('SmartShip Simulation Engine is running...');
+
+// --- Dummy Web Server for Render Free Tier ---
+// Render requires Web Services to bind to a port, otherwise it kills the process.
+// Background workers are paid, but Web Services have a free tier.
+const PORT = process.env.PORT || 3000;
+http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('SmartShip Simulation Engine is active and healthy.\n');
+}).listen(PORT, () => {
+  console.log(`Health check server listening on port ${PORT}`);
+});
